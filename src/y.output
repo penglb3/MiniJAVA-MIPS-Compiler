@@ -1,0 +1,2231 @@
+Terminals unused in grammar
+
+   LESS_PREC
+
+
+Grammar
+
+    0 $accept: Program $end
+
+    1 Program: PROGRAMnum ID SEMInum ClassDecls
+
+    2 ClassDecls: ClassDecls ClassDecl
+    3           | ClassDecl
+
+    4 ClassDecl: CLASSnum ID Body
+
+    5 Body: LBRACEnum Decl_MethodDecls RBRACEnum
+
+    6 Decl_MethodDecls: Decl_MethodDecls MethodDecl
+    7                 | Decl
+    8                 | %empty
+
+    9 Decl: DECLARATIONSnum FieldDecls ENDDECLARATIONSnum
+
+   10 FieldDecls: FieldDecls FieldDecl
+   11           | %empty
+
+   12 FieldDecl: TypeId VarDecls SEMInum
+
+   13 VarDecls: VarDecls COMMAnum VarDecl
+   14         | VarDecl
+
+   15 VarDecl: VarDeclID EQUALnum VarInit
+   16        | VarDeclID
+
+   17 VarDeclID: ID BracPairs
+
+   18 BracPairs: LBRACnum RBRACnum BracPairs
+   19          | %empty
+
+   20 VarInit: Expr
+   21        | ArrayInit
+   22        | ArrayCreation
+
+   23 ArrayInit: LBRACEnum VarInits RBRACEnum
+
+   24 VarInits: VarInits COMMAnum VarInit
+   25         | VarInit
+
+   26 ArrayCreation: INTnum Bound
+
+   27 Bound: Bound LBRACnum Expr RBRACnum
+   28      | LBRACnum Expr RBRACnum
+
+   29 MethodDecl: METHODnum VOIDnum ID LPARENnum FormalParameterList RPARENnum Block
+   30           | METHODnum TypeId ID LPARENnum FormalParameterList RPARENnum Block
+
+   31 FormalParameterList: ArgType Specs SEMInum FormalParameterList
+   32                    | ArgType Specs
+   33                    | %empty
+
+   34 ArgType: VALnum
+   35        | %empty
+
+   36 Specs: INTnum INTIDs
+
+   37 INTIDs: ID COMMAnum INTIDs
+   38       | ID
+
+   39 Block: Decl StmtList
+   40      | StmtList
+
+   41 TypeId: Type BracPairs DOTnum TypeId
+   42       | Type BracPairs
+
+   43 Type: INTnum
+   44     | ID
+
+   45 StmtList: LBRACEnum Stmts RBRACEnum
+
+   46 Stmts: Stmts SEMInum Stmt
+   47      | Stmt
+
+   48 Stmt: AssignStmt
+   49     | MethodCallStmt
+   50     | ReturnStmt
+   51     | IfElseStmt
+   52     | WhileStmt
+   53     | %empty
+
+   54 AssignStmt: Var ASSGNnum Expr
+
+   55 MethodCallStmt: Var LPARENnum Exprs RPARENnum
+   56               | Var LPARENnum RPARENnum
+
+   57 ReturnStmt: RETURNnum Expr
+   58           | RETURNnum
+
+   59 IfElseStmt: IfElseOps
+   60           | IfElseOps ELSEnum StmtList
+
+   61 IfElseOps: IfElseOps ELSEnum IfStmt
+   62          | IfStmt
+
+   63 IfStmt: IFnum Expr StmtList
+
+   64 WhileStmt: WHILEnum Expr StmtList
+
+   65 Expr: SimpleExpr
+   66     | SimpleExpr LTnum SimpleExpr
+   67     | SimpleExpr GTnum SimpleExpr
+   68     | SimpleExpr EQnum SimpleExpr
+   69     | SimpleExpr NEnum SimpleExpr
+   70     | SimpleExpr LEnum SimpleExpr
+   71     | SimpleExpr GEnum SimpleExpr
+
+   72 Exprs: Expr COMMAnum Exprs
+   73      | Expr
+
+   74 SimpleExpr: PLUSnum UnsignedSimpleExpr
+   75           | MINUSnum UnsignedSimpleExpr
+   76           | UnsignedSimpleExpr
+
+   77 UnsignedSimpleExpr: UnsignedSimpleExpr PLUSnum Term
+   78                   | UnsignedSimpleExpr MINUSnum Term
+   79                   | UnsignedSimpleExpr ORnum Term
+   80                   | Term
+
+   81 Term: Term TIMESnum Factor
+   82     | Term DIVIDEnum Factor
+   83     | Term ANDnum Factor
+   84     | Factor
+
+   85 Factor: UnsignedConst
+   86       | Var
+   87       | MethodCallStmt
+   88       | LPARENnum Expr RPARENnum
+   89       | NOTnum Factor
+
+   90 UnsignedConst: ICONSTnum
+   91              | SCONSTnum
+
+   92 Var: ID Select
+
+   93 Select: LBRACnum Index RBRACnum Select
+   94       | Field Select
+   95       | %empty
+
+   96 Index: Expr COMMAnum Index
+   97      | Expr
+
+   98 Field: DOTnum ID
+
+   99 ID: IDnum
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+ANDnum (258) 83
+ASSGNnum (259) 54
+DECLARATIONSnum (260) 9
+DOTnum (261) 41 98
+ENDDECLARATIONSnum (262) 9
+EQUALnum (263) 15
+GTnum (264) 67
+IDnum (265) 99
+INTnum (266) 26 36 43
+LBRACnum (267) 18 27 28 93
+LPARENnum (268) 29 30 55 56 88
+METHODnum (269) 29 30
+NEnum (270) 69
+ORnum (271) 79
+PROGRAMnum (272) 1
+RBRACnum (273) 18 27 28 93
+RPARENnum (274) 29 30 55 56 88
+SEMInum (275) 1 12 31 46
+VALnum (276) 34
+WHILEnum (277) 64
+CLASSnum (278) 4
+COMMAnum (279) 13 24 37 72 96
+DIVIDEnum (280) 82
+ELSEnum (281) 60 61
+EQnum (282) 68
+GEnum (283) 71
+ICONSTnum (284) 90
+IFnum (285) 63
+LBRACEnum (286) 5 23 45
+LEnum (287) 70
+LTnum (288) 66
+MINUSnum (289) 75 78
+NOTnum (290) 89
+PLUSnum (291) 74 77
+RBRACEnum (292) 5 23 45
+RETURNnum (293) 57 58
+SCONSTnum (294) 91
+TIMESnum (295) 81
+VOIDnum (296) 29
+LESS_PREC (297)
+
+
+Nonterminals, with rules where they appear
+
+$accept (43)
+    on left: 0
+Program (44)
+    on left: 1, on right: 0
+ClassDecls (45)
+    on left: 2 3, on right: 1 2
+ClassDecl (46)
+    on left: 4, on right: 2 3
+Body (47)
+    on left: 5, on right: 4
+Decl_MethodDecls (48)
+    on left: 6 7 8, on right: 5 6
+Decl (49)
+    on left: 9, on right: 7 39
+FieldDecls (50)
+    on left: 10 11, on right: 9 10
+FieldDecl (51)
+    on left: 12, on right: 10
+VarDecls (52)
+    on left: 13 14, on right: 12 13
+VarDecl (53)
+    on left: 15 16, on right: 13 14
+VarDeclID (54)
+    on left: 17, on right: 15 16
+BracPairs (55)
+    on left: 18 19, on right: 17 18 41 42
+VarInit (56)
+    on left: 20 21 22, on right: 15 24 25
+ArrayInit (57)
+    on left: 23, on right: 21
+VarInits (58)
+    on left: 24 25, on right: 23 24
+ArrayCreation (59)
+    on left: 26, on right: 22
+Bound (60)
+    on left: 27 28, on right: 26 27
+MethodDecl (61)
+    on left: 29 30, on right: 6
+FormalParameterList (62)
+    on left: 31 32 33, on right: 29 30 31
+ArgType (63)
+    on left: 34 35, on right: 31 32
+Specs (64)
+    on left: 36, on right: 31 32
+INTIDs (65)
+    on left: 37 38, on right: 36 37
+Block (66)
+    on left: 39 40, on right: 29 30
+TypeId (67)
+    on left: 41 42, on right: 12 30 41
+Type (68)
+    on left: 43 44, on right: 41 42
+StmtList (69)
+    on left: 45, on right: 39 40 60 63 64
+Stmts (70)
+    on left: 46 47, on right: 45 46
+Stmt (71)
+    on left: 48 49 50 51 52 53, on right: 46 47
+AssignStmt (72)
+    on left: 54, on right: 48
+MethodCallStmt (73)
+    on left: 55 56, on right: 49 87
+ReturnStmt (74)
+    on left: 57 58, on right: 50
+IfElseStmt (75)
+    on left: 59 60, on right: 51
+IfElseOps (76)
+    on left: 61 62, on right: 59 60 61
+IfStmt (77)
+    on left: 63, on right: 61 62
+WhileStmt (78)
+    on left: 64, on right: 52
+Expr (79)
+    on left: 65 66 67 68 69 70 71, on right: 20 27 28 54 57 63 64 72
+    73 88 96 97
+Exprs (80)
+    on left: 72 73, on right: 55 72
+SimpleExpr (81)
+    on left: 74 75 76, on right: 65 66 67 68 69 70 71
+UnsignedSimpleExpr (82)
+    on left: 77 78 79 80, on right: 74 75 76 77 78 79
+Term (83)
+    on left: 81 82 83 84, on right: 77 78 79 80 81 82 83
+Factor (84)
+    on left: 85 86 87 88 89, on right: 81 82 83 84 89
+UnsignedConst (85)
+    on left: 90 91, on right: 85
+Var (86)
+    on left: 92, on right: 54 55 56 86
+Select (87)
+    on left: 93 94 95, on right: 92 93 94
+Index (88)
+    on left: 96 97, on right: 93 96
+Field (89)
+    on left: 98, on right: 94
+ID (90)
+    on left: 99, on right: 1 4 17 29 30 37 38 44 92 98
+
+
+State 0
+
+    0 $accept: . Program $end
+
+    PROGRAMnum  shift, and go to state 1
+
+    Program  go to state 2
+
+
+State 1
+
+    1 Program: PROGRAMnum . ID SEMInum ClassDecls
+
+    IDnum  shift, and go to state 3
+
+    ID  go to state 4
+
+
+State 2
+
+    0 $accept: Program . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+   99 ID: IDnum .
+
+    $default  reduce using rule 99 (ID)
+
+
+State 4
+
+    1 Program: PROGRAMnum ID . SEMInum ClassDecls
+
+    SEMInum  shift, and go to state 6
+
+
+State 5
+
+    0 $accept: Program $end .
+
+    $default  accept
+
+
+State 6
+
+    1 Program: PROGRAMnum ID SEMInum . ClassDecls
+
+    CLASSnum  shift, and go to state 7
+
+    ClassDecls  go to state 8
+    ClassDecl   go to state 9
+
+
+State 7
+
+    4 ClassDecl: CLASSnum . ID Body
+
+    IDnum  shift, and go to state 3
+
+    ID  go to state 10
+
+
+State 8
+
+    1 Program: PROGRAMnum ID SEMInum ClassDecls .
+    2 ClassDecls: ClassDecls . ClassDecl
+
+    CLASSnum  shift, and go to state 7
+
+    $default  reduce using rule 1 (Program)
+
+    ClassDecl  go to state 11
+
+
+State 9
+
+    3 ClassDecls: ClassDecl .
+
+    $default  reduce using rule 3 (ClassDecls)
+
+
+State 10
+
+    4 ClassDecl: CLASSnum ID . Body
+
+    LBRACEnum  shift, and go to state 12
+
+    Body  go to state 13
+
+
+State 11
+
+    2 ClassDecls: ClassDecls ClassDecl .
+
+    $default  reduce using rule 2 (ClassDecls)
+
+
+State 12
+
+    5 Body: LBRACEnum . Decl_MethodDecls RBRACEnum
+
+    DECLARATIONSnum  shift, and go to state 14
+
+    $default  reduce using rule 8 (Decl_MethodDecls)
+
+    Decl_MethodDecls  go to state 15
+    Decl              go to state 16
+
+
+State 13
+
+    4 ClassDecl: CLASSnum ID Body .
+
+    $default  reduce using rule 4 (ClassDecl)
+
+
+State 14
+
+    9 Decl: DECLARATIONSnum . FieldDecls ENDDECLARATIONSnum
+
+    $default  reduce using rule 11 (FieldDecls)
+
+    FieldDecls  go to state 17
+
+
+State 15
+
+    5 Body: LBRACEnum Decl_MethodDecls . RBRACEnum
+    6 Decl_MethodDecls: Decl_MethodDecls . MethodDecl
+
+    METHODnum  shift, and go to state 18
+    RBRACEnum  shift, and go to state 19
+
+    MethodDecl  go to state 20
+
+
+State 16
+
+    7 Decl_MethodDecls: Decl .
+
+    $default  reduce using rule 7 (Decl_MethodDecls)
+
+
+State 17
+
+    9 Decl: DECLARATIONSnum FieldDecls . ENDDECLARATIONSnum
+   10 FieldDecls: FieldDecls . FieldDecl
+
+    ENDDECLARATIONSnum  shift, and go to state 21
+    IDnum               shift, and go to state 3
+    INTnum              shift, and go to state 22
+
+    FieldDecl  go to state 23
+    TypeId     go to state 24
+    Type       go to state 25
+    ID         go to state 26
+
+
+State 18
+
+   29 MethodDecl: METHODnum . VOIDnum ID LPARENnum FormalParameterList RPARENnum Block
+   30           | METHODnum . TypeId ID LPARENnum FormalParameterList RPARENnum Block
+
+    IDnum    shift, and go to state 3
+    INTnum   shift, and go to state 22
+    VOIDnum  shift, and go to state 27
+
+    TypeId  go to state 28
+    Type    go to state 25
+    ID      go to state 26
+
+
+State 19
+
+    5 Body: LBRACEnum Decl_MethodDecls RBRACEnum .
+
+    $default  reduce using rule 5 (Body)
+
+
+State 20
+
+    6 Decl_MethodDecls: Decl_MethodDecls MethodDecl .
+
+    $default  reduce using rule 6 (Decl_MethodDecls)
+
+
+State 21
+
+    9 Decl: DECLARATIONSnum FieldDecls ENDDECLARATIONSnum .
+
+    $default  reduce using rule 9 (Decl)
+
+
+State 22
+
+   43 Type: INTnum .
+
+    $default  reduce using rule 43 (Type)
+
+
+State 23
+
+   10 FieldDecls: FieldDecls FieldDecl .
+
+    $default  reduce using rule 10 (FieldDecls)
+
+
+State 24
+
+   12 FieldDecl: TypeId . VarDecls SEMInum
+
+    IDnum  shift, and go to state 3
+
+    VarDecls   go to state 29
+    VarDecl    go to state 30
+    VarDeclID  go to state 31
+    ID         go to state 32
+
+
+State 25
+
+   41 TypeId: Type . BracPairs DOTnum TypeId
+   42       | Type . BracPairs
+
+    LBRACnum  shift, and go to state 33
+
+    $default  reduce using rule 19 (BracPairs)
+
+    BracPairs  go to state 34
+
+
+State 26
+
+   44 Type: ID .
+
+    $default  reduce using rule 44 (Type)
+
+
+State 27
+
+   29 MethodDecl: METHODnum VOIDnum . ID LPARENnum FormalParameterList RPARENnum Block
+
+    IDnum  shift, and go to state 3
+
+    ID  go to state 35
+
+
+State 28
+
+   30 MethodDecl: METHODnum TypeId . ID LPARENnum FormalParameterList RPARENnum Block
+
+    IDnum  shift, and go to state 3
+
+    ID  go to state 36
+
+
+State 29
+
+   12 FieldDecl: TypeId VarDecls . SEMInum
+   13 VarDecls: VarDecls . COMMAnum VarDecl
+
+    SEMInum   shift, and go to state 37
+    COMMAnum  shift, and go to state 38
+
+
+State 30
+
+   14 VarDecls: VarDecl .
+
+    $default  reduce using rule 14 (VarDecls)
+
+
+State 31
+
+   15 VarDecl: VarDeclID . EQUALnum VarInit
+   16        | VarDeclID .
+
+    EQUALnum  shift, and go to state 39
+
+    $default  reduce using rule 16 (VarDecl)
+
+
+State 32
+
+   17 VarDeclID: ID . BracPairs
+
+    LBRACnum  shift, and go to state 33
+
+    $default  reduce using rule 19 (BracPairs)
+
+    BracPairs  go to state 40
+
+
+State 33
+
+   18 BracPairs: LBRACnum . RBRACnum BracPairs
+
+    RBRACnum  shift, and go to state 41
+
+
+State 34
+
+   41 TypeId: Type BracPairs . DOTnum TypeId
+   42       | Type BracPairs .
+
+    DOTnum  shift, and go to state 42
+
+    $default  reduce using rule 42 (TypeId)
+
+
+State 35
+
+   29 MethodDecl: METHODnum VOIDnum ID . LPARENnum FormalParameterList RPARENnum Block
+
+    LPARENnum  shift, and go to state 43
+
+
+State 36
+
+   30 MethodDecl: METHODnum TypeId ID . LPARENnum FormalParameterList RPARENnum Block
+
+    LPARENnum  shift, and go to state 44
+
+
+State 37
+
+   12 FieldDecl: TypeId VarDecls SEMInum .
+
+    $default  reduce using rule 12 (FieldDecl)
+
+
+State 38
+
+   13 VarDecls: VarDecls COMMAnum . VarDecl
+
+    IDnum  shift, and go to state 3
+
+    VarDecl    go to state 45
+    VarDeclID  go to state 31
+    ID         go to state 32
+
+
+State 39
+
+   15 VarDecl: VarDeclID EQUALnum . VarInit
+
+    IDnum      shift, and go to state 3
+    INTnum     shift, and go to state 46
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    LBRACEnum  shift, and go to state 49
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    VarInit             go to state 54
+    ArrayInit           go to state 55
+    ArrayCreation       go to state 56
+    MethodCallStmt      go to state 57
+    Expr                go to state 58
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 40
+
+   17 VarDeclID: ID BracPairs .
+
+    $default  reduce using rule 17 (VarDeclID)
+
+
+State 41
+
+   18 BracPairs: LBRACnum RBRACnum . BracPairs
+
+    LBRACnum  shift, and go to state 33
+
+    $default  reduce using rule 19 (BracPairs)
+
+    BracPairs  go to state 66
+
+
+State 42
+
+   41 TypeId: Type BracPairs DOTnum . TypeId
+
+    IDnum   shift, and go to state 3
+    INTnum  shift, and go to state 22
+
+    TypeId  go to state 67
+    Type    go to state 25
+    ID      go to state 26
+
+
+State 43
+
+   29 MethodDecl: METHODnum VOIDnum ID LPARENnum . FormalParameterList RPARENnum Block
+
+    VALnum  shift, and go to state 68
+
+    INTnum    reduce using rule 35 (ArgType)
+    $default  reduce using rule 33 (FormalParameterList)
+
+    FormalParameterList  go to state 69
+    ArgType              go to state 70
+
+
+State 44
+
+   30 MethodDecl: METHODnum TypeId ID LPARENnum . FormalParameterList RPARENnum Block
+
+    VALnum  shift, and go to state 68
+
+    INTnum    reduce using rule 35 (ArgType)
+    $default  reduce using rule 33 (FormalParameterList)
+
+    FormalParameterList  go to state 71
+    ArgType              go to state 70
+
+
+State 45
+
+   13 VarDecls: VarDecls COMMAnum VarDecl .
+
+    $default  reduce using rule 13 (VarDecls)
+
+
+State 46
+
+   26 ArrayCreation: INTnum . Bound
+
+    LBRACnum  shift, and go to state 72
+
+    Bound  go to state 73
+
+
+State 47
+
+   88 Factor: LPARENnum . Expr RPARENnum
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    Expr                go to state 74
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 48
+
+   90 UnsignedConst: ICONSTnum .
+
+    $default  reduce using rule 90 (UnsignedConst)
+
+
+State 49
+
+   23 ArrayInit: LBRACEnum . VarInits RBRACEnum
+
+    IDnum      shift, and go to state 3
+    INTnum     shift, and go to state 46
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    LBRACEnum  shift, and go to state 49
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    VarInit             go to state 75
+    ArrayInit           go to state 55
+    VarInits            go to state 76
+    ArrayCreation       go to state 56
+    MethodCallStmt      go to state 57
+    Expr                go to state 58
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 50
+
+   75 SimpleExpr: MINUSnum . UnsignedSimpleExpr
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    NOTnum     shift, and go to state 51
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    UnsignedSimpleExpr  go to state 77
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 51
+
+   89 Factor: NOTnum . Factor
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    NOTnum     shift, and go to state 51
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt  go to state 57
+    Factor          go to state 78
+    UnsignedConst   go to state 63
+    Var             go to state 64
+    ID              go to state 65
+
+
+State 52
+
+   74 SimpleExpr: PLUSnum . UnsignedSimpleExpr
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    NOTnum     shift, and go to state 51
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    UnsignedSimpleExpr  go to state 79
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 53
+
+   91 UnsignedConst: SCONSTnum .
+
+    $default  reduce using rule 91 (UnsignedConst)
+
+
+State 54
+
+   15 VarDecl: VarDeclID EQUALnum VarInit .
+
+    $default  reduce using rule 15 (VarDecl)
+
+
+State 55
+
+   21 VarInit: ArrayInit .
+
+    $default  reduce using rule 21 (VarInit)
+
+
+State 56
+
+   22 VarInit: ArrayCreation .
+
+    $default  reduce using rule 22 (VarInit)
+
+
+State 57
+
+   87 Factor: MethodCallStmt .
+
+    $default  reduce using rule 87 (Factor)
+
+
+State 58
+
+   20 VarInit: Expr .
+
+    $default  reduce using rule 20 (VarInit)
+
+
+State 59
+
+   65 Expr: SimpleExpr .
+   66     | SimpleExpr . LTnum SimpleExpr
+   67     | SimpleExpr . GTnum SimpleExpr
+   68     | SimpleExpr . EQnum SimpleExpr
+   69     | SimpleExpr . NEnum SimpleExpr
+   70     | SimpleExpr . LEnum SimpleExpr
+   71     | SimpleExpr . GEnum SimpleExpr
+
+    GTnum  shift, and go to state 80
+    NEnum  shift, and go to state 81
+    EQnum  shift, and go to state 82
+    GEnum  shift, and go to state 83
+    LEnum  shift, and go to state 84
+    LTnum  shift, and go to state 85
+
+    $default  reduce using rule 65 (Expr)
+
+
+State 60
+
+   76 SimpleExpr: UnsignedSimpleExpr .
+   77 UnsignedSimpleExpr: UnsignedSimpleExpr . PLUSnum Term
+   78                   | UnsignedSimpleExpr . MINUSnum Term
+   79                   | UnsignedSimpleExpr . ORnum Term
+
+    ORnum     shift, and go to state 86
+    MINUSnum  shift, and go to state 87
+    PLUSnum   shift, and go to state 88
+
+    $default  reduce using rule 76 (SimpleExpr)
+
+
+State 61
+
+   80 UnsignedSimpleExpr: Term .
+   81 Term: Term . TIMESnum Factor
+   82     | Term . DIVIDEnum Factor
+   83     | Term . ANDnum Factor
+
+    ANDnum     shift, and go to state 89
+    DIVIDEnum  shift, and go to state 90
+    TIMESnum   shift, and go to state 91
+
+    $default  reduce using rule 80 (UnsignedSimpleExpr)
+
+
+State 62
+
+   84 Term: Factor .
+
+    $default  reduce using rule 84 (Term)
+
+
+State 63
+
+   85 Factor: UnsignedConst .
+
+    $default  reduce using rule 85 (Factor)
+
+
+State 64
+
+   55 MethodCallStmt: Var . LPARENnum Exprs RPARENnum
+   56               | Var . LPARENnum RPARENnum
+   86 Factor: Var .
+
+    LPARENnum  shift, and go to state 92
+
+    $default  reduce using rule 86 (Factor)
+
+
+State 65
+
+   92 Var: ID . Select
+
+    DOTnum    shift, and go to state 93
+    LBRACnum  shift, and go to state 94
+
+    $default  reduce using rule 95 (Select)
+
+    Select  go to state 95
+    Field   go to state 96
+
+
+State 66
+
+   18 BracPairs: LBRACnum RBRACnum BracPairs .
+
+    $default  reduce using rule 18 (BracPairs)
+
+
+State 67
+
+   41 TypeId: Type BracPairs DOTnum TypeId .
+
+    $default  reduce using rule 41 (TypeId)
+
+
+State 68
+
+   34 ArgType: VALnum .
+
+    $default  reduce using rule 34 (ArgType)
+
+
+State 69
+
+   29 MethodDecl: METHODnum VOIDnum ID LPARENnum FormalParameterList . RPARENnum Block
+
+    RPARENnum  shift, and go to state 97
+
+
+State 70
+
+   31 FormalParameterList: ArgType . Specs SEMInum FormalParameterList
+   32                    | ArgType . Specs
+
+    INTnum  shift, and go to state 98
+
+    Specs  go to state 99
+
+
+State 71
+
+   30 MethodDecl: METHODnum TypeId ID LPARENnum FormalParameterList . RPARENnum Block
+
+    RPARENnum  shift, and go to state 100
+
+
+State 72
+
+   28 Bound: LBRACnum . Expr RBRACnum
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    Expr                go to state 101
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 73
+
+   26 ArrayCreation: INTnum Bound .
+   27 Bound: Bound . LBRACnum Expr RBRACnum
+
+    LBRACnum  shift, and go to state 102
+
+    $default  reduce using rule 26 (ArrayCreation)
+
+
+State 74
+
+   88 Factor: LPARENnum Expr . RPARENnum
+
+    RPARENnum  shift, and go to state 103
+
+
+State 75
+
+   25 VarInits: VarInit .
+
+    $default  reduce using rule 25 (VarInits)
+
+
+State 76
+
+   23 ArrayInit: LBRACEnum VarInits . RBRACEnum
+   24 VarInits: VarInits . COMMAnum VarInit
+
+    COMMAnum   shift, and go to state 104
+    RBRACEnum  shift, and go to state 105
+
+
+State 77
+
+   75 SimpleExpr: MINUSnum UnsignedSimpleExpr .
+   77 UnsignedSimpleExpr: UnsignedSimpleExpr . PLUSnum Term
+   78                   | UnsignedSimpleExpr . MINUSnum Term
+   79                   | UnsignedSimpleExpr . ORnum Term
+
+    ORnum     shift, and go to state 86
+    MINUSnum  shift, and go to state 87
+    PLUSnum   shift, and go to state 88
+
+    $default  reduce using rule 75 (SimpleExpr)
+
+
+State 78
+
+   89 Factor: NOTnum Factor .
+
+    $default  reduce using rule 89 (Factor)
+
+
+State 79
+
+   74 SimpleExpr: PLUSnum UnsignedSimpleExpr .
+   77 UnsignedSimpleExpr: UnsignedSimpleExpr . PLUSnum Term
+   78                   | UnsignedSimpleExpr . MINUSnum Term
+   79                   | UnsignedSimpleExpr . ORnum Term
+
+    ORnum     shift, and go to state 86
+    MINUSnum  shift, and go to state 87
+    PLUSnum   shift, and go to state 88
+
+    $default  reduce using rule 74 (SimpleExpr)
+
+
+State 80
+
+   67 Expr: SimpleExpr GTnum . SimpleExpr
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    SimpleExpr          go to state 106
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 81
+
+   69 Expr: SimpleExpr NEnum . SimpleExpr
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    SimpleExpr          go to state 107
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 82
+
+   68 Expr: SimpleExpr EQnum . SimpleExpr
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    SimpleExpr          go to state 108
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 83
+
+   71 Expr: SimpleExpr GEnum . SimpleExpr
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    SimpleExpr          go to state 109
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 84
+
+   70 Expr: SimpleExpr LEnum . SimpleExpr
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    SimpleExpr          go to state 110
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 85
+
+   66 Expr: SimpleExpr LTnum . SimpleExpr
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    SimpleExpr          go to state 111
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 86
+
+   79 UnsignedSimpleExpr: UnsignedSimpleExpr ORnum . Term
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    NOTnum     shift, and go to state 51
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt  go to state 57
+    Term            go to state 112
+    Factor          go to state 62
+    UnsignedConst   go to state 63
+    Var             go to state 64
+    ID              go to state 65
+
+
+State 87
+
+   78 UnsignedSimpleExpr: UnsignedSimpleExpr MINUSnum . Term
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    NOTnum     shift, and go to state 51
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt  go to state 57
+    Term            go to state 113
+    Factor          go to state 62
+    UnsignedConst   go to state 63
+    Var             go to state 64
+    ID              go to state 65
+
+
+State 88
+
+   77 UnsignedSimpleExpr: UnsignedSimpleExpr PLUSnum . Term
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    NOTnum     shift, and go to state 51
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt  go to state 57
+    Term            go to state 114
+    Factor          go to state 62
+    UnsignedConst   go to state 63
+    Var             go to state 64
+    ID              go to state 65
+
+
+State 89
+
+   83 Term: Term ANDnum . Factor
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    NOTnum     shift, and go to state 51
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt  go to state 57
+    Factor          go to state 115
+    UnsignedConst   go to state 63
+    Var             go to state 64
+    ID              go to state 65
+
+
+State 90
+
+   82 Term: Term DIVIDEnum . Factor
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    NOTnum     shift, and go to state 51
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt  go to state 57
+    Factor          go to state 116
+    UnsignedConst   go to state 63
+    Var             go to state 64
+    ID              go to state 65
+
+
+State 91
+
+   81 Term: Term TIMESnum . Factor
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    NOTnum     shift, and go to state 51
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt  go to state 57
+    Factor          go to state 117
+    UnsignedConst   go to state 63
+    Var             go to state 64
+    ID              go to state 65
+
+
+State 92
+
+   55 MethodCallStmt: Var LPARENnum . Exprs RPARENnum
+   56               | Var LPARENnum . RPARENnum
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    RPARENnum  shift, and go to state 118
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    Expr                go to state 119
+    Exprs               go to state 120
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 93
+
+   98 Field: DOTnum . ID
+
+    IDnum  shift, and go to state 3
+
+    ID  go to state 121
+
+
+State 94
+
+   93 Select: LBRACnum . Index RBRACnum Select
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    Expr                go to state 122
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    Index               go to state 123
+    ID                  go to state 65
+
+
+State 95
+
+   92 Var: ID Select .
+
+    $default  reduce using rule 92 (Var)
+
+
+State 96
+
+   94 Select: Field . Select
+
+    DOTnum    shift, and go to state 93
+    LBRACnum  shift, and go to state 94
+
+    $default  reduce using rule 95 (Select)
+
+    Select  go to state 124
+    Field   go to state 96
+
+
+State 97
+
+   29 MethodDecl: METHODnum VOIDnum ID LPARENnum FormalParameterList RPARENnum . Block
+
+    DECLARATIONSnum  shift, and go to state 14
+    LBRACEnum        shift, and go to state 125
+
+    Decl      go to state 126
+    Block     go to state 127
+    StmtList  go to state 128
+
+
+State 98
+
+   36 Specs: INTnum . INTIDs
+
+    IDnum  shift, and go to state 3
+
+    INTIDs  go to state 129
+    ID      go to state 130
+
+
+State 99
+
+   31 FormalParameterList: ArgType Specs . SEMInum FormalParameterList
+   32                    | ArgType Specs .
+
+    SEMInum  shift, and go to state 131
+
+    $default  reduce using rule 32 (FormalParameterList)
+
+
+State 100
+
+   30 MethodDecl: METHODnum TypeId ID LPARENnum FormalParameterList RPARENnum . Block
+
+    DECLARATIONSnum  shift, and go to state 14
+    LBRACEnum        shift, and go to state 125
+
+    Decl      go to state 126
+    Block     go to state 132
+    StmtList  go to state 128
+
+
+State 101
+
+   28 Bound: LBRACnum Expr . RBRACnum
+
+    RBRACnum  shift, and go to state 133
+
+
+State 102
+
+   27 Bound: Bound LBRACnum . Expr RBRACnum
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    Expr                go to state 134
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 103
+
+   88 Factor: LPARENnum Expr RPARENnum .
+
+    $default  reduce using rule 88 (Factor)
+
+
+State 104
+
+   24 VarInits: VarInits COMMAnum . VarInit
+
+    IDnum      shift, and go to state 3
+    INTnum     shift, and go to state 46
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    LBRACEnum  shift, and go to state 49
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    VarInit             go to state 135
+    ArrayInit           go to state 55
+    ArrayCreation       go to state 56
+    MethodCallStmt      go to state 57
+    Expr                go to state 58
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 105
+
+   23 ArrayInit: LBRACEnum VarInits RBRACEnum .
+
+    $default  reduce using rule 23 (ArrayInit)
+
+
+State 106
+
+   67 Expr: SimpleExpr GTnum SimpleExpr .
+
+    $default  reduce using rule 67 (Expr)
+
+
+State 107
+
+   69 Expr: SimpleExpr NEnum SimpleExpr .
+
+    $default  reduce using rule 69 (Expr)
+
+
+State 108
+
+   68 Expr: SimpleExpr EQnum SimpleExpr .
+
+    $default  reduce using rule 68 (Expr)
+
+
+State 109
+
+   71 Expr: SimpleExpr GEnum SimpleExpr .
+
+    $default  reduce using rule 71 (Expr)
+
+
+State 110
+
+   70 Expr: SimpleExpr LEnum SimpleExpr .
+
+    $default  reduce using rule 70 (Expr)
+
+
+State 111
+
+   66 Expr: SimpleExpr LTnum SimpleExpr .
+
+    $default  reduce using rule 66 (Expr)
+
+
+State 112
+
+   79 UnsignedSimpleExpr: UnsignedSimpleExpr ORnum Term .
+   81 Term: Term . TIMESnum Factor
+   82     | Term . DIVIDEnum Factor
+   83     | Term . ANDnum Factor
+
+    ANDnum     shift, and go to state 89
+    DIVIDEnum  shift, and go to state 90
+    TIMESnum   shift, and go to state 91
+
+    $default  reduce using rule 79 (UnsignedSimpleExpr)
+
+
+State 113
+
+   78 UnsignedSimpleExpr: UnsignedSimpleExpr MINUSnum Term .
+   81 Term: Term . TIMESnum Factor
+   82     | Term . DIVIDEnum Factor
+   83     | Term . ANDnum Factor
+
+    ANDnum     shift, and go to state 89
+    DIVIDEnum  shift, and go to state 90
+    TIMESnum   shift, and go to state 91
+
+    $default  reduce using rule 78 (UnsignedSimpleExpr)
+
+
+State 114
+
+   77 UnsignedSimpleExpr: UnsignedSimpleExpr PLUSnum Term .
+   81 Term: Term . TIMESnum Factor
+   82     | Term . DIVIDEnum Factor
+   83     | Term . ANDnum Factor
+
+    ANDnum     shift, and go to state 89
+    DIVIDEnum  shift, and go to state 90
+    TIMESnum   shift, and go to state 91
+
+    $default  reduce using rule 77 (UnsignedSimpleExpr)
+
+
+State 115
+
+   83 Term: Term ANDnum Factor .
+
+    $default  reduce using rule 83 (Term)
+
+
+State 116
+
+   82 Term: Term DIVIDEnum Factor .
+
+    $default  reduce using rule 82 (Term)
+
+
+State 117
+
+   81 Term: Term TIMESnum Factor .
+
+    $default  reduce using rule 81 (Term)
+
+
+State 118
+
+   56 MethodCallStmt: Var LPARENnum RPARENnum .
+
+    $default  reduce using rule 56 (MethodCallStmt)
+
+
+State 119
+
+   72 Exprs: Expr . COMMAnum Exprs
+   73      | Expr .
+
+    COMMAnum  shift, and go to state 136
+
+    $default  reduce using rule 73 (Exprs)
+
+
+State 120
+
+   55 MethodCallStmt: Var LPARENnum Exprs . RPARENnum
+
+    RPARENnum  shift, and go to state 137
+
+
+State 121
+
+   98 Field: DOTnum ID .
+
+    $default  reduce using rule 98 (Field)
+
+
+State 122
+
+   96 Index: Expr . COMMAnum Index
+   97      | Expr .
+
+    COMMAnum  shift, and go to state 138
+
+    $default  reduce using rule 97 (Index)
+
+
+State 123
+
+   93 Select: LBRACnum Index . RBRACnum Select
+
+    RBRACnum  shift, and go to state 139
+
+
+State 124
+
+   94 Select: Field Select .
+
+    $default  reduce using rule 94 (Select)
+
+
+State 125
+
+   45 StmtList: LBRACEnum . Stmts RBRACEnum
+
+    IDnum      shift, and go to state 3
+    WHILEnum   shift, and go to state 140
+    IFnum      shift, and go to state 141
+    RETURNnum  shift, and go to state 142
+
+    $default  reduce using rule 53 (Stmt)
+
+    Stmts           go to state 143
+    Stmt            go to state 144
+    AssignStmt      go to state 145
+    MethodCallStmt  go to state 146
+    ReturnStmt      go to state 147
+    IfElseStmt      go to state 148
+    IfElseOps       go to state 149
+    IfStmt          go to state 150
+    WhileStmt       go to state 151
+    Var             go to state 152
+    ID              go to state 65
+
+
+State 126
+
+   39 Block: Decl . StmtList
+
+    LBRACEnum  shift, and go to state 125
+
+    StmtList  go to state 153
+
+
+State 127
+
+   29 MethodDecl: METHODnum VOIDnum ID LPARENnum FormalParameterList RPARENnum Block .
+
+    $default  reduce using rule 29 (MethodDecl)
+
+
+State 128
+
+   40 Block: StmtList .
+
+    $default  reduce using rule 40 (Block)
+
+
+State 129
+
+   36 Specs: INTnum INTIDs .
+
+    $default  reduce using rule 36 (Specs)
+
+
+State 130
+
+   37 INTIDs: ID . COMMAnum INTIDs
+   38       | ID .
+
+    COMMAnum  shift, and go to state 154
+
+    $default  reduce using rule 38 (INTIDs)
+
+
+State 131
+
+   31 FormalParameterList: ArgType Specs SEMInum . FormalParameterList
+
+    VALnum  shift, and go to state 68
+
+    INTnum    reduce using rule 35 (ArgType)
+    $default  reduce using rule 33 (FormalParameterList)
+
+    FormalParameterList  go to state 155
+    ArgType              go to state 70
+
+
+State 132
+
+   30 MethodDecl: METHODnum TypeId ID LPARENnum FormalParameterList RPARENnum Block .
+
+    $default  reduce using rule 30 (MethodDecl)
+
+
+State 133
+
+   28 Bound: LBRACnum Expr RBRACnum .
+
+    $default  reduce using rule 28 (Bound)
+
+
+State 134
+
+   27 Bound: Bound LBRACnum Expr . RBRACnum
+
+    RBRACnum  shift, and go to state 156
+
+
+State 135
+
+   24 VarInits: VarInits COMMAnum VarInit .
+
+    $default  reduce using rule 24 (VarInits)
+
+
+State 136
+
+   72 Exprs: Expr COMMAnum . Exprs
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    Expr                go to state 119
+    Exprs               go to state 157
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 137
+
+   55 MethodCallStmt: Var LPARENnum Exprs RPARENnum .
+
+    $default  reduce using rule 55 (MethodCallStmt)
+
+
+State 138
+
+   96 Index: Expr COMMAnum . Index
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    Expr                go to state 122
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    Index               go to state 158
+    ID                  go to state 65
+
+
+State 139
+
+   93 Select: LBRACnum Index RBRACnum . Select
+
+    DOTnum    shift, and go to state 93
+    LBRACnum  shift, and go to state 94
+
+    $default  reduce using rule 95 (Select)
+
+    Select  go to state 159
+    Field   go to state 96
+
+
+State 140
+
+   64 WhileStmt: WHILEnum . Expr StmtList
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    Expr                go to state 160
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 141
+
+   63 IfStmt: IFnum . Expr StmtList
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    Expr                go to state 161
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 142
+
+   57 ReturnStmt: RETURNnum . Expr
+   58           | RETURNnum .
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    $default  reduce using rule 58 (ReturnStmt)
+
+    MethodCallStmt      go to state 57
+    Expr                go to state 162
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 143
+
+   45 StmtList: LBRACEnum Stmts . RBRACEnum
+   46 Stmts: Stmts . SEMInum Stmt
+
+    SEMInum    shift, and go to state 163
+    RBRACEnum  shift, and go to state 164
+
+
+State 144
+
+   47 Stmts: Stmt .
+
+    $default  reduce using rule 47 (Stmts)
+
+
+State 145
+
+   48 Stmt: AssignStmt .
+
+    $default  reduce using rule 48 (Stmt)
+
+
+State 146
+
+   49 Stmt: MethodCallStmt .
+
+    $default  reduce using rule 49 (Stmt)
+
+
+State 147
+
+   50 Stmt: ReturnStmt .
+
+    $default  reduce using rule 50 (Stmt)
+
+
+State 148
+
+   51 Stmt: IfElseStmt .
+
+    $default  reduce using rule 51 (Stmt)
+
+
+State 149
+
+   59 IfElseStmt: IfElseOps .
+   60           | IfElseOps . ELSEnum StmtList
+   61 IfElseOps: IfElseOps . ELSEnum IfStmt
+
+    ELSEnum  shift, and go to state 165
+
+    $default  reduce using rule 59 (IfElseStmt)
+
+
+State 150
+
+   62 IfElseOps: IfStmt .
+
+    $default  reduce using rule 62 (IfElseOps)
+
+
+State 151
+
+   52 Stmt: WhileStmt .
+
+    $default  reduce using rule 52 (Stmt)
+
+
+State 152
+
+   54 AssignStmt: Var . ASSGNnum Expr
+   55 MethodCallStmt: Var . LPARENnum Exprs RPARENnum
+   56               | Var . LPARENnum RPARENnum
+
+    ASSGNnum   shift, and go to state 166
+    LPARENnum  shift, and go to state 92
+
+
+State 153
+
+   39 Block: Decl StmtList .
+
+    $default  reduce using rule 39 (Block)
+
+
+State 154
+
+   37 INTIDs: ID COMMAnum . INTIDs
+
+    IDnum  shift, and go to state 3
+
+    INTIDs  go to state 167
+    ID      go to state 130
+
+
+State 155
+
+   31 FormalParameterList: ArgType Specs SEMInum FormalParameterList .
+
+    $default  reduce using rule 31 (FormalParameterList)
+
+
+State 156
+
+   27 Bound: Bound LBRACnum Expr RBRACnum .
+
+    $default  reduce using rule 27 (Bound)
+
+
+State 157
+
+   72 Exprs: Expr COMMAnum Exprs .
+
+    $default  reduce using rule 72 (Exprs)
+
+
+State 158
+
+   96 Index: Expr COMMAnum Index .
+
+    $default  reduce using rule 96 (Index)
+
+
+State 159
+
+   93 Select: LBRACnum Index RBRACnum Select .
+
+    $default  reduce using rule 93 (Select)
+
+
+State 160
+
+   64 WhileStmt: WHILEnum Expr . StmtList
+
+    LBRACEnum  shift, and go to state 125
+
+    StmtList  go to state 168
+
+
+State 161
+
+   63 IfStmt: IFnum Expr . StmtList
+
+    LBRACEnum  shift, and go to state 125
+
+    StmtList  go to state 169
+
+
+State 162
+
+   57 ReturnStmt: RETURNnum Expr .
+
+    $default  reduce using rule 57 (ReturnStmt)
+
+
+State 163
+
+   46 Stmts: Stmts SEMInum . Stmt
+
+    IDnum      shift, and go to state 3
+    WHILEnum   shift, and go to state 140
+    IFnum      shift, and go to state 141
+    RETURNnum  shift, and go to state 142
+
+    $default  reduce using rule 53 (Stmt)
+
+    Stmt            go to state 170
+    AssignStmt      go to state 145
+    MethodCallStmt  go to state 146
+    ReturnStmt      go to state 147
+    IfElseStmt      go to state 148
+    IfElseOps       go to state 149
+    IfStmt          go to state 150
+    WhileStmt       go to state 151
+    Var             go to state 152
+    ID              go to state 65
+
+
+State 164
+
+   45 StmtList: LBRACEnum Stmts RBRACEnum .
+
+    $default  reduce using rule 45 (StmtList)
+
+
+State 165
+
+   60 IfElseStmt: IfElseOps ELSEnum . StmtList
+   61 IfElseOps: IfElseOps ELSEnum . IfStmt
+
+    IFnum      shift, and go to state 141
+    LBRACEnum  shift, and go to state 125
+
+    StmtList  go to state 171
+    IfStmt    go to state 172
+
+
+State 166
+
+   54 AssignStmt: Var ASSGNnum . Expr
+
+    IDnum      shift, and go to state 3
+    LPARENnum  shift, and go to state 47
+    ICONSTnum  shift, and go to state 48
+    MINUSnum   shift, and go to state 50
+    NOTnum     shift, and go to state 51
+    PLUSnum    shift, and go to state 52
+    SCONSTnum  shift, and go to state 53
+
+    MethodCallStmt      go to state 57
+    Expr                go to state 173
+    SimpleExpr          go to state 59
+    UnsignedSimpleExpr  go to state 60
+    Term                go to state 61
+    Factor              go to state 62
+    UnsignedConst       go to state 63
+    Var                 go to state 64
+    ID                  go to state 65
+
+
+State 167
+
+   37 INTIDs: ID COMMAnum INTIDs .
+
+    $default  reduce using rule 37 (INTIDs)
+
+
+State 168
+
+   64 WhileStmt: WHILEnum Expr StmtList .
+
+    $default  reduce using rule 64 (WhileStmt)
+
+
+State 169
+
+   63 IfStmt: IFnum Expr StmtList .
+
+    $default  reduce using rule 63 (IfStmt)
+
+
+State 170
+
+   46 Stmts: Stmts SEMInum Stmt .
+
+    $default  reduce using rule 46 (Stmts)
+
+
+State 171
+
+   60 IfElseStmt: IfElseOps ELSEnum StmtList .
+
+    $default  reduce using rule 60 (IfElseStmt)
+
+
+State 172
+
+   61 IfElseOps: IfElseOps ELSEnum IfStmt .
+
+    $default  reduce using rule 61 (IfElseOps)
+
+
+State 173
+
+   54 AssignStmt: Var ASSGNnum Expr .
+
+    $default  reduce using rule 54 (AssignStmt)
