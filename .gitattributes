@@ -1,1 +1,1 @@
-*.s linguist-detectable=false
+*.s linguist-detectable=false linguist-language=MIPS Assembly
