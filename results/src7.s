@@ -15,99 +15,85 @@ S35: .asciiz "sum(5)="
 .globl main
 # c7 BEGINS
 .data
-symbol_3:
+symbol_3: # [class] c7
 .text
-symbol_4:
+symbol_4: # [function] sum
   addiu $sp, $sp, -12
   sw $ra, 8($sp)
   sw $fp, 4($sp)
   sw $a0, 0($sp)
   move $fp, $sp
-symbol_6:
+symbol_6: # [variable] s
   li $t0,0
   addiu $sp,$sp,-4
   sw $t0,0($sp)
-# IF #0
+#  IF #0_0
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t1, 12($t7)
+  lw $t0, 12($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
-  li $t2, 0
-  sle $t0, $t1, $t2
+  li $t0, 0
+  sle $t0, $t1, $t0
   beqz $t0, false_0_0
   li $v0, 1
   j next_0
 false_0_0:
-# IF #0
+# ELSE IF #0_1
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t1, 12($t7)
+  lw $t0, 12($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
-  li $t2, 1
-  seq $t0, $t1, $t2
+  li $t0, 1
+  seq $t0, $t1, $t0
   beqz $t0, false_0_1
   li $v0, 1
   j next_0
 false_0_1:
 # ELSE #0
   move $t7, $fp
-  add $t7, $t7, $zero
   addiu $s1, $t7, -4
   addiu $sp, $sp, -4
   sw $s1, 0($sp)
   addiu $sp, $sp, -4
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t1, 12($t7)
+  lw $t0, 12($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
-  li $t2, 1
-  sub $t0, $t1, $t2
-  move $a0, $t0
-  sw $a0, 0($sp)
-  move $s4, $a0
+  li $t0, 1
+  sub $t0, $t1, $t0
+  sw $t0, 0($sp)
   jal symbol_4
-  move $a0, $s4
   addiu $sp, $sp, 4
   move $t0, $v0
-  move $t1, $t0
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   addiu $sp, $sp, -4
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t1, 12($t7)
+  lw $t0, 12($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
-  li $t2, 2
-  sub $t0, $t1, $t2
-  move $a0, $t0
-  sw $a0, 0($sp)
-  move $s4, $a0
+  li $t0, 2
+  sub $t0, $t1, $t0
+  sw $t0, 0($sp)
   jal symbol_4
-  move $a0, $s4
   addiu $sp, $sp, 4
   move $t0, $v0
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
-  move $t2, $t0
-  add $t0, $t1, $t2
+  add $t0, $t1, $t0
   move $s2, $t0
   lw $s1, 0($sp)
   addiu $sp, $sp, 4
   sw $s2, 0($s1)
   move $t7, $fp
-  add $t7, $t7, $zero
   lw $v0, -4($t7)
 next_0:
   move $sp, $fp
@@ -128,11 +114,9 @@ main:
   la $a0, S35
   syscall
   addiu $sp, $sp, -4
-  li $a0, 5
-  sw $a0, 0($sp)
-  move $s4, $a0
+  li $t0, 5
+  sw $t0, 0($sp)
   jal symbol_4
-  move $a0, $s4
   addiu $sp, $sp, 4
   move $t0, $v0
   li $v0, 1

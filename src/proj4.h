@@ -23,11 +23,11 @@ int gen_func_tail(int nSymIdx);
 int gen(const char* format, ...);
 int gen_label(int nSymIdx);
 int gen_alu(int op, int rd, int rs, int rt);
-int gen_expr(Expr type, int rd, int is_lhs);
+int gen_get_expr(Expr type, int rd, int is_lhs);
 void gen_object(tree root);
 int processVarInit(tree root);
-# define gen_lhs( expr, rd ) gen_expr((expr), (rd), 1)
-# define gen_rhs( expr, rd ) gen_expr((expr), (rd), 0)
+# define gen_get_lhs( expr, rd ) gen_get_expr((expr), (rd), 1)
+# define gen_get_rhs( expr, rd ) gen_get_expr((expr), (rd), 0)
 int pop(int rd);
 int push(int rd);
 int gen_get_var(int nSymIdx, int rd, int mode);

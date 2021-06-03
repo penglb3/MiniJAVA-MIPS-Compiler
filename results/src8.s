@@ -15,16 +15,16 @@
 .globl main
 # Point BEGINS
 .data
-symbol_1:
-symbol_2:
+symbol_1: # [class] Point
+symbol_2: # [variable] x
 .word 0
-symbol_3:
+symbol_3: # [variable] y
 .word 0
 # Point ENDS
 # Test BEGINS
 .data
-symbol_4:
-symbol_5:
+symbol_4: # [class] Test
+symbol_5: # [variable] p0
 .word 0
 .word 0
 .text
@@ -35,20 +35,19 @@ main:
   la $a0, symbol_4
   sw $a0, 0($sp)
   move $fp, $sp
-symbol_7:
+symbol_7: # [variable] p
   li $t0,0
   addiu $sp,$sp,-4
   sw $t0,0($sp)
   li $t0,0
   addiu $sp,$sp,-4
   sw $t0,0($sp)
-symbol_8:
+symbol_8: # [variable] xxx
   li $t0,0
   addiu $sp,$sp,-4
   sw $t0,0($sp)
   move $a0, $fp
   move $t7, $a0
-  add $t7, $t7, $zero
   addiu $s1, $t7, 4
   addiu $sp, $sp, -4
   sw $s1, 0($sp)
@@ -58,7 +57,6 @@ symbol_8:
   sw $s2, 0($s1)
   move $a0, $fp
   move $t7, $a0
-  add $t7, $t7, $zero
   addiu $s1, $t7, 0
   addiu $sp, $sp, -4
   sw $s1, 0($sp)

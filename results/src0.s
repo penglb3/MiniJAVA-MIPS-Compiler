@@ -15,8 +15,8 @@ S36: .asciiz "y = "
 .globl main
 # c1 BEGINS
 .data
-symbol_3:
-symbol_4:
+symbol_3: # [class] c1
+symbol_4: # [variable] x
 .word -1
 .text
 main:
@@ -26,7 +26,7 @@ main:
   la $a0, symbol_3
   sw $a0, 0($sp)
   move $fp, $sp
-symbol_6:
+symbol_6: # [variable] y
   li $t0,4
   addiu $sp,$sp,-4
   sw $t0,0($sp)
@@ -35,7 +35,6 @@ symbol_6:
   syscall
   li $v0, 1
   lw $t7, 0($fp)
-  add $t7, $t7, $zero
   lw $a0, 0($t7)
   syscall
   li $v0, 0xB
@@ -46,7 +45,6 @@ symbol_6:
   syscall
   li $v0, 1
   move $t7, $fp
-  add $t7, $t7, $zero
   lw $a0, -4($t7)
   syscall
   li $v0, 0xB

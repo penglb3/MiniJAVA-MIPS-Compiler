@@ -18,13 +18,13 @@ S45: .asciiz "test case 2:  "
 .globl main
 # rect BEGINS
 .data
-symbol_3:
-symbol_4:
+symbol_3: # [class] rect
+symbol_4: # [variable] width
 .word 3
-symbol_5:
+symbol_5: # [variable] length
 .word 7
 .text
-symbol_6:
+symbol_6: # [function] getArea
   addiu $sp, $sp, -12
   sw $ra, 8($sp)
   sw $fp, 4($sp)
@@ -35,7 +35,6 @@ symbol_6:
   syscall
   li $v0, 1
   lw $t7, 0($fp)
-  add $t7, $t7, $zero
   lw $a0, 0($t7)
   syscall
   li $v0, 0xB
@@ -43,23 +42,20 @@ symbol_6:
   syscall
   li $v0, 1
   lw $t7, 0($fp)
-  add $t7, $t7, $zero
   lw $a0, 4($t7)
   syscall
   li $v0, 0xB
   li $a0, 0xA
   syscall
   lw $t7, 0($fp)
-  add $t7, $t7, $zero
-  lw $t1, 0($t7)
+  lw $t0, 0($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
   lw $t7, 0($fp)
-  add $t7, $t7, $zero
-  lw $t2, 4($t7)
-  mul $t0, $t1, $t2
+  lw $t0, 4($t7)
+  mul $t0, $t1, $t0
   move $v0, $t0
   move $sp, $fp
   lw $ra, 8($sp)
@@ -70,8 +66,8 @@ symbol_6:
 # rect ENDS
 # mc BEGINS
 .data
-symbol_7:
-symbol_8:
+symbol_7: # [class] mc
+symbol_8: # [variable] len
 .word 0
 .text
 main:
@@ -81,25 +77,23 @@ main:
   la $a0, symbol_7
   sw $a0, 0($sp)
   move $fp, $sp
-symbol_10:
+symbol_10: # [variable] area
   li $t0,0
   addiu $sp,$sp,-4
   sw $t0,0($sp)
-# IF #0
+#  IF #0_0
   la $a0, symbol_3+0
   move $t7, $a0
-  add $t7, $t7, $zero
-  lw $t1, 0($t7)
+  lw $t0, 0($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
-  li $t2, 0
-  sgt $t0, $t1, $t2
+  li $t0, 0
+  sgt $t0, $t1, $t0
   beqz $t0, false_0_0
   la $a0, symbol_3+0
   move $t7, $a0
-  add $t7, $t7, $zero
   addiu $s1, $t7, 0
   addiu $sp, $sp, -4
   sw $s1, 0($sp)
@@ -110,13 +104,10 @@ symbol_10:
   j next_0
 false_0_0:
 next_0:
-  move $s4, $a0
   la $a0, symbol_3+0
   jal symbol_6
-  move $a0, $s4
   la $a0, symbol_3+0
   move $t7, $a0
-  add $t7, $t7, $zero
   addiu $s1, $t7, 4
   addiu $sp, $sp, -4
   sw $s1, 0($sp)
@@ -125,14 +116,11 @@ next_0:
   addiu $sp, $sp, 4
   sw $s2, 0($s1)
   move $t7, $fp
-  add $t7, $t7, $zero
   addiu $s1, $t7, -4
   addiu $sp, $sp, -4
   sw $s1, 0($sp)
-  move $s4, $a0
   la $a0, symbol_3+0
   jal symbol_6
-  move $a0, $s4
   move $t0, $v0
   move $s2, $t0
   lw $s1, 0($sp)
@@ -140,16 +128,13 @@ next_0:
   sw $s2, 0($s1)
   li $v0, 1
   move $t7, $fp
-  add $t7, $t7, $zero
   lw $a0, -4($t7)
   syscall
   li $v0, 0xB
   li $a0, 0xA
   syscall
-  move $s4, $a0
   la $a0, symbol_3+0
   jal symbol_6
-  move $a0, $s4
   move $t0, $v0
   li $v0, 1
   move $a0, $t0

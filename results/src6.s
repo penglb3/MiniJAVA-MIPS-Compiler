@@ -17,45 +17,40 @@
 .globl main
 # c6 BEGINS
 .data
-symbol_3:
+symbol_3: # [class] c6
 .text
-symbol_4:
+symbol_4: # [function] product
   addiu $sp, $sp, -12
   sw $ra, 8($sp)
   sw $fp, 4($sp)
   sw $a0, 0($sp)
   move $fp, $sp
   move $t7, $fp
-  add $t7, $t7, $zero
   addiu $s1, $t7, 12
   addiu $sp, $sp, -4
   sw $s1, 0($sp)
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t1, 16($t7)
+  lw $t0, 16($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t2, 20($t7)
-  mul $t0, $t1, $t2
+  lw $t0, 20($t7)
+  mul $t0, $t1, $t0
   move $s2, $t0
   lw $s1, 0($sp)
   addiu $sp, $sp, 4
   sw $s2, 0($s1)
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t1, 12($t7)
+  lw $t0, 12($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t2, 12($t7)
-  mul $t0, $t1, $t2
+  lw $t0, 12($t7)
+  mul $t0, $t1, $t0
   move $v0, $t0
   move $sp, $fp
   lw $ra, 8($sp)
@@ -71,16 +66,15 @@ main:
   la $a0, symbol_3
   sw $a0, 0($sp)
   move $fp, $sp
-symbol_9:
+symbol_9: # [variable] x
   li $t0,0
   addiu $sp,$sp,-4
   sw $t0,0($sp)
-symbol_10:
+symbol_10: # [variable] p
   li $t0,0
   addiu $sp,$sp,-4
   sw $t0,0($sp)
   move $t7, $fp
-  add $t7, $t7, $zero
   addiu $s1, $t7, -8
   addiu $sp, $sp, -4
   sw $s1, 0($sp)
@@ -89,24 +83,19 @@ symbol_10:
   addiu $sp, $sp, 4
   sw $s2, 0($s1)
   move $t7, $fp
-  add $t7, $t7, $zero
   addiu $s1, $t7, -4
   addiu $sp, $sp, -4
   sw $s1, 0($sp)
   addiu $sp, $sp, -12
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $a0, -8($t7)
-  sw $a0, 0($sp)
-  li $a0, 3
-  sw $a0, 4($sp)
-  li $a0, 4
-  sw $a0, 8($sp)
-  move $s4, $a0
+  lw $t0, -8($t7)
+  sw $t0, 0($sp)
+  li $t0, 3
+  sw $t0, 4($sp)
+  li $t0, 4
+  sw $t0, 8($sp)
   jal symbol_4
-  move $a0, $s4
   move $t7, $fp
-  add $t7, $t7, $zero
   addiu $a2, $t7, -8
   lw $t3, 0($sp)
   sw $t3, 0($a2)
@@ -118,7 +107,6 @@ symbol_10:
   sw $s2, 0($s1)
   li $v0, 1
   move $t7, $fp
-  add $t7, $t7, $zero
   lw $a0, -8($t7)
   syscall
   li $v0, 0xB
@@ -126,7 +114,6 @@ symbol_10:
   syscall
   li $v0, 1
   move $t7, $fp
-  add $t7, $t7, $zero
   lw $a0, -4($t7)
   syscall
   li $v0, 0xB

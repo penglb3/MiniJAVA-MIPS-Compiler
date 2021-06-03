@@ -19,7 +19,7 @@ S53: .asciiz "y="
 .globl main
 # c3 BEGINS
 .data
-symbol_4:
+symbol_4: # [class] c3
 .text
 main:
   addiu $sp, $sp, -12
@@ -28,11 +28,11 @@ main:
   la $a0, symbol_4
   sw $a0, 0($sp)
   move $fp, $sp
-symbol_6:
+symbol_6: # [variable] x
   li $t0,0
   addiu $sp,$sp,-4
   sw $t0,0($sp)
-symbol_7:
+symbol_7: # [variable] y
   li $t0,0
   addiu $sp,$sp,-4
   sw $t0,0($sp)
@@ -42,35 +42,32 @@ symbol_7:
   li $v0,5
   syscall
   move $t7, $fp
-  add $t7, $t7, $zero
   addiu $t0, $t7, -4
   sw $v0,0($t0)
-# IF #0
+#  IF #0_0
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t1, -4($t7)
+  lw $t0, -4($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
-  li $t2, 10
-  sgt $t0, $t1, $t2
+  li $t0, 10
+  sgt $t0, $t1, $t0
   beqz $t0, false_0_0
   li $v0, 4
   la $a0, S42
   syscall
   j next_0
 false_0_0:
-# IF #0
+# ELSE IF #0_1
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t1, -4($t7)
+  lw $t0, -4($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
-  li $t2, 5
-  sgt $t0, $t1, $t2
+  li $t0, 5
+  sgt $t0, $t1, $t0
   beqz $t0, false_0_1
   li $v0, 4
   la $a0, S46
@@ -83,7 +80,6 @@ false_0_1:
   syscall
 next_0:
   move $t7, $fp
-  add $t7, $t7, $zero
   addiu $s1, $t7, -4
   addiu $sp, $sp, -4
   sw $s1, 0($sp)
@@ -92,7 +88,6 @@ next_0:
   addiu $sp, $sp, 4
   sw $s2, 0($s1)
   move $t7, $fp
-  add $t7, $t7, $zero
   addiu $s1, $t7, -8
   addiu $sp, $sp, -4
   sw $s1, 0($sp)
@@ -102,49 +97,43 @@ next_0:
   sw $s2, 0($s1)
 loop_0:
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t1, -4($t7)
+  lw $t0, -4($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
-  li $t2, 10
-  sle $t0, $t1, $t2
+  li $t0, 10
+  sle $t0, $t1, $t0
   beqz $t0, loop_0_end
   move $t7, $fp
-  add $t7, $t7, $zero
   addiu $s1, $t7, -8
   addiu $sp, $sp, -4
   sw $s1, 0($sp)
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t1, -8($t7)
+  lw $t0, -8($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t2, -4($t7)
-  add $t0, $t1, $t2
+  lw $t0, -4($t7)
+  add $t0, $t1, $t0
   move $s2, $t0
   lw $s1, 0($sp)
   addiu $sp, $sp, 4
   sw $s2, 0($s1)
   move $t7, $fp
-  add $t7, $t7, $zero
   addiu $s1, $t7, -4
   addiu $sp, $sp, -4
   sw $s1, 0($sp)
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t1, -4($t7)
+  lw $t0, -4($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
-  li $t2, 1
-  add $t0, $t1, $t2
+  li $t0, 1
+  add $t0, $t1, $t0
   move $s2, $t0
   lw $s1, 0($sp)
   addiu $sp, $sp, 4
@@ -156,7 +145,6 @@ loop_0_end:
   syscall
   li $v0, 1
   move $t7, $fp
-  add $t7, $t7, $zero
   lw $a0, -8($t7)
   syscall
   li $v0, 0xB

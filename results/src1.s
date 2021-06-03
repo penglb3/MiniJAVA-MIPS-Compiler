@@ -14,8 +14,8 @@ S29: .asciiz "x>=0"
 .globl main
 # c1 BEGINS
 .data
-symbol_3:
-symbol_4:
+symbol_3: # [class] c1
+symbol_4: # [variable] x
 .word -1
 .text
 main:
@@ -25,20 +25,19 @@ main:
   la $a0, symbol_3
   sw $a0, 0($sp)
   move $fp, $sp
-symbol_6:
+symbol_6: # [variable] x
   li $t0,4
   addiu $sp,$sp,-4
   sw $t0,0($sp)
-# IF #0
+#  IF #0_0
   move $t7, $fp
-  add $t7, $t7, $zero
-  lw $t1, -4($t7)
+  lw $t0, -4($t7)
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
+  sw $t0, 0($sp)
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
-  li $t2, 0
-  sge $t0, $t1, $t2
+  li $t0, 0
+  sge $t0, $t1, $t0
   beqz $t0, false_0_0
   li $v0, 4
   la $a0, S29

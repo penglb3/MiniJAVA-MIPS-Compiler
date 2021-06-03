@@ -8,7 +8,6 @@
 #include <assert.h>
 
 int offset = 0, expr_result = 0, init_type, type_decl, branch_num=0, top=0, field_base=0;
-int def_class[128]={0};
 char inst_buffer[128];
 extern int nesting, in_main;
 # define is_local (nesting==2)
@@ -61,8 +60,6 @@ int insertAndConvertToSymbol(tree* rootptr){
         return (*rootptr)->IntVal;
     int nStrIdx = (*rootptr)->IntVal;//Class name's idx
     int nSymIdx = InsertEntry(nStrIdx);
-    if(field_base) 
-        def_class[nSymIdx] = field_base;
     if (nSymIdx != 0){
         free(*rootptr);
         *rootptr = MakeLeaf(STNode, nSymIdx);
@@ -138,11 +135,11 @@ Expr traverseSimpleExpr(tree root){
         case DivOp:
         case AndOp:
             lhs = traverseSimpleExpr(root->LeftC);
-            gen_lhs(lhs, 9);
+            gen_get_lhs(lhs, 8);
             rhs = traverseSimpleExpr(root->RightC);
             pop(9);
-            gen_rhs(rhs, 10);
-            result.value = gen_alu(root->NodeOpType, 8, 9, 10);
+            gen_get_rhs(rhs, 8);
+            result.value = gen_alu(root->NodeOpType, 8, 9, 8);
             break;
         
     // Not in above cases? Then it must be **Factor**
@@ -157,8 +154,8 @@ Expr traverseSimpleExpr(tree root){
             if (result.type == INT)
                 result.value = ! result.value;
             else 
-                gen_rhs(result, 9),
-                result.value = gen_alu(NotOp, 8, 9, 10);
+                gen_get_rhs(result, 8),
+                result.value = gen_alu(NotOp, 8, 9, 8);
             result.type = result.type==INT?INT:EXPR;
             break;
         // MethodCallStmt
@@ -194,8 +191,8 @@ Expr processSimpleExprWithSign(tree root){
         if (result.type == INT)
             result.value = - result.value;
         else 
-            gen_rhs(result, 9),
-            result.value = gen_alu(UnaryNegOp, 8, 9, 10);
+            gen_get_rhs(result, 8),
+            result.value = gen_alu(UnaryNegOp, 8, 8, 10);
         result.type = (result.type==INT?INT:EXPR);
         return result;
     }
@@ -209,7 +206,7 @@ int traverseIfElse(tree root){
     int depth = traverseIfElse(root->LeftC);
     Expr expr;
     if (root->RightC->NodeOpType == CommaOp) {// If-Stmt
-        gen("# IF #%d", branch_num);
+        gen("# %s IF #%d_%d", depth?"ELSE":"", branch_num, depth);
         expr = processExpr(root->RightC->LeftC);
         gen("  beqz $%s, false_%d_%d", reg[expr.value], branch_num, depth);
         traverseStmtOp(root->RightC->RightC);
@@ -237,19 +234,17 @@ void processRoutineCall(tree root){
         arg_stack[argc_call++]=arg;
         
         if (!builtin(func_name_id)) {
-            gen_rhs(arg, 4);
-            gen("  sw $a0, %d($sp)", (argc_call-1)*4);
+            gen_get_rhs(arg, 8);
+            gen("  sw $t0, %d($sp)", (argc_call-1)*4);
         }
         root = root->RightC;
     }
     if(argc_call != argc)
         error_msg(ARGUMENTS_NUM2, CONTINUE, GetAttr(func_name_id, NAME_ATTR), 0);
     if (!builtin(func_name_id)) {
-        gen("  move $s4, $a0");
         if (inst_buffer[0]!='#')
         gen(inst_buffer);
         gen("  jal symbol_%d", func_name_id);
-        gen("  move $a0, $s4");
         // Write back all ref-args.
         for (int i=0;i<argc;i++){
             arg_symbol = func_name_id+i+1;
@@ -268,19 +263,7 @@ void processRoutineCall(tree root){
             gen("  li $v0, 4"),gen("  la $a0, S%d", arg.value);
         else{
             gen("  li $v0, 1");
-            switch (arg.type)
-            {
-            case VARIABLE:
-                gen_get_var_value(arg.value, 4);
-                break;
-            case INT:
-                gen("  li $a0, %d", arg.value);
-
-                break;
-            case EXPR:
-                gen("  move $a0, $%s", reg[arg.value]);
-                break;
-            }
+            gen_get_rhs(arg, 4);
             gen("  syscall");
             gen("  li $v0, 0xB");
             gen("  li $a0, 0xA");
@@ -311,11 +294,11 @@ Expr processExpr(tree root){
         case GEOp:
         case GTOp:
             lhs = processSimpleExprWithSign(root->LeftC);
-            gen_lhs(lhs, 9);
+            gen_get_lhs(lhs, 8);
             rhs = processSimpleExprWithSign(root->RightC);
             pop(9);
-            gen_rhs(rhs, 10);
-            result.value = gen_alu(root->NodeOpType, 8, 9, 10);
+            gen_get_rhs(rhs, 8);
+            result.value = gen_alu(root->NodeOpType, 8, 9, 8);
             if (lhs.type == STRING || rhs.type == STRING) 
                 error_msg(TYPE_MIS, CONTINUE, (lhs.type==STRING?lhs.type:rhs.type), 0);
             return result;
@@ -482,7 +465,7 @@ void processStmt(tree root){
             gen_get_var_addr(nSymIdx, 17);
             push(17);
             exp = processExpr(expr);
-            gen_rhs(exp, 18);
+            gen_get_rhs(exp, 18);
             pop(17);
             gen("  sw $s2, 0($s1)");
             break;
@@ -491,7 +474,7 @@ void processStmt(tree root){
             break;
         case ReturnOp:
             exp = processExpr(root->LeftC);
-            gen_rhs(exp, 2);
+            gen_get_rhs(exp, 2);
             break;
         case IfElseOp:
             traverseIfElse(root);
@@ -543,9 +526,10 @@ void processMethodDeclOp(tree root){
         return_type = head->RightC->RightC;
     // IDNode
     int nSymIdx = insertAndConvertToSymbol(&(head->LeftC));
-    gen_func_head(nSymIdx);
+    
     uintptr_t kind = (IsNull(return_type))?PROCE:FUNC;
     SetAttr(nSymIdx, KIND_ATTR, kind);  
+    gen_func_head(nSymIdx);
     SetAttr(nSymIdx, TREE_ATTR, (uintptr_t)root->RightC);
     if (!IsNull(return_type)){
         SetAttr(nSymIdx, TYPE_ATTR, (uintptr_t)return_type);
@@ -603,7 +587,6 @@ void processVarDecl(tree root){
     // id
     int nSymIdx = insertAndConvertToSymbol(&(root->LeftC));
     SetAttr(nSymIdx, TYPE_ATTR, (uintptr_t)type);
-    gen_label(nSymIdx);
     // typeid
     type_decl = 0;
     int n_dims = processTypeId(type), // this process will set type_decl.
@@ -613,14 +596,13 @@ void processVarDecl(tree root){
         SetAttr(nSymIdx, DIMEN_ATTR, n_dims);
     } else
         SetAttr(nSymIdx, KIND_ATTR, VAR);
-    
+    gen_label(nSymIdx);
     if (type_decl){
         length = GetAttr(type_decl, OFFSET_ATTR);
         int i = 0;
         for (;i<top;i++)
             if (class_stack[i].nSymIdx==type_decl)
                 break;
-        // gen("  # [DEV] type_decl = %s | i=%d", str_table+GetAttr(type_decl, NAME_ATTR), i);
         gen_object(class_stack[i].decl);
     }
     else{ // var_init

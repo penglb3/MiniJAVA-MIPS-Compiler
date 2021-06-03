@@ -6,7 +6,7 @@
 #include <string.h>
 #include <assert.h>
 
-extern char str_table[], inst_buffer[];
+extern char str_table[], inst_buffer[], *kind_name[];
 extern Expr arr_offset;
 extern InClassVars class_stack[];
 extern int top, field_base;
@@ -72,7 +72,7 @@ int gen(const char* format, ...){
 // Generate a label of symbol table entry 'nSymIdx'
 int gen_label(int nSymIdx){
     if( strcmp(str_table+GetAttr(nSymIdx, NAME_ATTR), "main") )
-        return gen("symbol_%d:", nSymIdx);
+        return gen("symbol_%d: # [%s] %s", nSymIdx, kind_name[GetAttr(nSymIdx, KIND_ATTR)-1], str_table+GetAttr(nSymIdx, NAME_ATTR));
     else
         return gen("main:");
 }
@@ -87,7 +87,7 @@ int gen_alu(int op, int rd, int rs, int rt){
 }
 
 // Post processing of an expr, generates lhs or rhs for following expression
-int gen_expr(Expr expr, int rd, int is_lhs){
+int gen_get_expr(Expr expr, int rd, int is_lhs){
     
     switch (expr.type){
         case INT: 
@@ -97,7 +97,8 @@ int gen_expr(Expr expr, int rd, int is_lhs){
             gen("  la $%s, S%d", reg[rd], expr.value); 
             break;
         case EXPR: 
-            gen("  move $%s, $%s", reg[rd], reg[expr.value]);
+            if (rd!=expr.value)
+                gen("  move $%s, $%s", reg[rd], reg[expr.value]);
             break;
         case VARIABLE: 
             gen_get_var_value(expr.value, rd);
@@ -116,9 +117,9 @@ int pop(int rd){
 }
 
 // stack push
-int push(int rd){
-    gen("  addiu $sp, $sp, -4\n  sw $%s, 0($sp)", reg[rd]);
-    return rd;
+int push(int rs){
+    gen("  addiu $sp, $sp, -4\n  sw $%s, 0($sp)", reg[rs]);
+    return rs;
 }
 
 // Generate codes to get an variable's value or address.
@@ -137,7 +138,7 @@ int gen_get_var(int nSymIdx, int rd, int as_value){
             gen("  sll $%s, $%s, 2", reg[arr_offset_reg], reg[arr_offset_reg]);
             break;
         case VARIABLE:
-            arr_offset_reg = 16;
+            arr_offset_reg = 16; // $s0 reserved for array offset.
             gen_get_var_value(arr_offset.value, 16);
             gen("  sll $%s, $%s, 2", reg[arr_offset_reg], reg[arr_offset_reg]);
             break;
@@ -147,14 +148,15 @@ int gen_get_var(int nSymIdx, int rd, int as_value){
     }
 
     if (is_global_var(nSymIdx)){
-        if (strcmp(inst_buffer,"#") && rd!=16)
-            gen(inst_buffer),gen("  move $t7, $a0");
+        if (strcmp(inst_buffer,"#") && rd!=16) // if rd==16, then we are processing the array offset.
+            gen(inst_buffer), gen("  move $t7, $a0");
         else
             gen("  lw $t7, 0($fp)"); // 0($fp) has base address of self.
     }
     else
         gen("  move $t7, $fp");
-    gen("  add $t7, $t7, $%s", reg[arr_offset_reg]);
+    if (arr_offset_reg)
+        gen("  add $t7, $t7, $%s", reg[arr_offset_reg]);
     if (as_value)
         gen("  lw $%s, %d($t7)", reg[rd], offset + arr_offset_int * arr_type);
     else 
@@ -186,3 +188,16 @@ void gen_object(tree root){
     // var_init
     else processVarInit(var_init);
 }
+
+/*  ********************************************************
+    Just in case you are wondering where are the code generating traverse, 
+    it is along with the semantic traverse in `semantic.c`, where you will find 
+    all the calls of gen() and other code generation related funcion.
+
+    The reasons of doing so are straightforward:
+    1. You do not need to write another bunch of traverse codes, since you already have one,
+    2. You can utilize all the information in the semantic analysis, 
+    3. Better performance because we don't need to traverse it yet again, and
+    4. This feels a lot like Syntax Directed Translation baby! 
+
+    ******************************************************** */

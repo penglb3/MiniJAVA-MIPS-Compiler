@@ -12,9 +12,9 @@
 .globl main
 # c5 BEGINS
 .data
-symbol_3:
+symbol_3: # [class] c5
 .text
-symbol_4:
+symbol_4: # [function] func
   addiu $sp, $sp, -12
   sw $ra, 8($sp)
   sw $fp, 4($sp)
@@ -35,21 +35,15 @@ main:
   la $a0, symbol_3
   sw $a0, 0($sp)
   move $fp, $sp
-  move $s4, $a0
   jal symbol_4
-  move $a0, $s4
   move $t0, $v0
-  move $t1, $t0
   addiu $sp, $sp, -4
-  sw $t1, 0($sp)
-  move $s4, $a0
+  sw $t0, 0($sp)
   jal symbol_4
-  move $a0, $s4
   move $t0, $v0
   lw $t1, 0($sp)
   addiu $sp, $sp, 4
-  move $t2, $t0
-  add $t0, $t1, $t2
+  add $t0, $t1, $t0
   li $v0, 1
   move $a0, $t0
   syscall
